@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://u8sgij6eedy8"]
+
+[ext_resource type="Script" path="res://Scenes/world.gd" id="1_7u7ul"]
+[ext_resource type="Texture2D" uid="uid://c6cvq2ps6cga7" path="res://assets/textures/background.png" id="1_l6ude"]
+[ext_resource type="PackedScene" uid="uid://p70e4ic8dxm3" path="res://player/player.tscn" id="2_700ft"]
+[ext_resource type="PackedScene" uid="uid://dsdcs5setreqy" path="res://Scenes/floor.tscn" id="3_83b57"]
+[ext_resource type="Script" path="res://Scenes/Spawner.gd" id="5_oyv5b"]
+[ext_resource type="PackedScene" uid="uid://oe052b4rvfi1" path="res://Scenes/hud.tscn" id="6_tqc7c"]
+[ext_resource type="FontFile" uid="uid://bqquveyf4uley" path="res://assets/fonts/flappyfont.TTF" id="7_yels0"]
+[ext_resource type="Script" path="res://Scenes/start_tap.gd" id="9_ubloy"]
+
+[node name="World" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_7u7ul")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("1_l6ude")
+centered = false
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource("5_oyv5b")
+
+[node name="Timer" type="Timer" parent="Spawner"]
+wait_time = 1.4
+
+[node name="Floor" parent="." instance=ExtResource("3_83b57")]
+position = Vector2(0, 697)
+
+[node name="Player" parent="." instance=ExtResource("2_700ft")]
+unique_name_in_owner = true
+position = Vector2(150, 427)
+
+[node name="HUD" parent="." instance=ExtResource("6_tqc7c")]
+
+[node name="starter" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 81.0
+offset_top = 641.0
+offset_right = 393.0
+offset_bottom = 856.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="start_tap" type="Label" parent="starter"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/font = ExtResource("7_yels0")
+theme_override_font_sizes/font_size = 48
+text = "Tap to start"
+script = ExtResource("9_ubloy")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(245, 404)
+zoom = Vector2(1.302, 1.302)
+
+[connection signal="timeout" from="Spawner/Timer" to="Spawner" method="_on_timer_timeout"]
